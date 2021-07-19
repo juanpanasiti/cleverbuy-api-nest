@@ -1,13 +1,18 @@
 import { Controller, Post, Body } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { LoginResponse } from '../../dist/interfaces/responses.interfaces';
 import { AuthService } from '../services/auth.service';
 
+@ApiBearerAuth()
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
     constructor(private authService: AuthService) {}
 
     @Post('login')
+    @ApiOperation({ summary: 'Login a user' })
+    @ApiResponse({ status: 400, description: 'BadRequest.' })
     login(@Body() payload: any): LoginResponse {
         const { user, password } = payload;
 
